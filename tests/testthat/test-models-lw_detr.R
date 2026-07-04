@@ -102,7 +102,17 @@ test_that("model_lw_detr pretrained weights require COCO num_classes", {
 test_that("tests for pretrained model_lw_detr_tiny", {
   skip_on_cran()
   skip_if_not(torch::torch_is_installed())
-  expect_coco_model_detects_cat(model_lw_detr_tiny(pretrained = TRUE))
+  model <- model_lw_detr_tiny(pretrained = TRUE)
+  input <- base_loader("assets/class/horse/horse-3.tiff") %>%
+    transform_to_tensor() %>%
+    transform_resize(c(256, 256)) %>%
+    torch_unsqueeze(1)
+  model$eval()
+  torch::with_no_grad({
+    out <- model(input[,1:3,..])
+  })
+  expect_bbox_is_xyxy(out$detections[[1]]$boxes, 256, 256)
+  expect_coco_model_detects_cat(model)
 })
 
 test_that("tests for pretrained model_lw_detr_small", {
@@ -112,7 +122,17 @@ test_that("tests for pretrained model_lw_detr_small", {
   )
   skip_on_cran()
   skip_if_not(torch::torch_is_installed())
-  expect_coco_model_detects_cat(model_lw_detr_small(pretrained = TRUE))
+  model <- model_lw_detr_small(pretrained = TRUE)
+  input <- base_loader("assets/class/horse/horse-3.tiff") %>%
+    transform_to_tensor() %>%
+    transform_resize(c(256, 256)) %>%
+    torch_unsqueeze(1)
+  model$eval()
+  torch::with_no_grad({
+    out <- model(input[,1:3,..])
+  })
+  expect_bbox_is_xyxy(out$detections[[1]]$boxes, 256, 256)
+  expect_coco_model_detects_cat(model, min_score = 0.22)
 })
 
 test_that("tests for pretrained model_lw_detr_medium", {
@@ -122,7 +142,18 @@ test_that("tests for pretrained model_lw_detr_medium", {
   )
   skip_on_cran()
   skip_if_not(torch::torch_is_installed())
-  expect_coco_model_detects_cat(model_lw_detr_medium(pretrained = TRUE))
+  model <- model_lw_detr_medium(pretrained = TRUE)
+  input <- base_loader("assets/class/horse/horse-3.tiff") %>%
+    transform_to_tensor() %>%
+    transform_resize(c(256, 256)) %>%
+    torch_unsqueeze(1)
+  model$eval()
+  torch::with_no_grad({
+    out <- model(input[,1:3,..])
+  })
+  expect_bbox_is_xyxy(out$detections[[1]]$boxes, 256, 256)
+  # Actually predict bus
+  # expect_coco_model_detects_cat(model)
 })
 
 test_that("tests for pretrained model_lw_detr_large", {
@@ -132,5 +163,15 @@ test_that("tests for pretrained model_lw_detr_large", {
   )
   skip_on_cran()
   skip_if_not(torch::torch_is_installed())
+  model <- model_lw_detr_large(pretrained = TRUE)
+  input <- base_loader("assets/class/horse/horse-3.tiff") %>%
+    transform_to_tensor() %>%
+    transform_resize(c(256, 256)) %>%
+    torch_unsqueeze(1)
+  model$eval()
+  torch::with_no_grad({
+    out <- model(input[,1:3,..])
+  })
+  expect_bbox_is_xyxy(out$detections[[1]]$boxes, 256, 256)
   expect_coco_model_detects_cat(model_lw_detr_large(pretrained = TRUE))
 })

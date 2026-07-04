@@ -1523,7 +1523,8 @@ build_rfdetr <- function(cfg, pretrained = FALSE, progress = TRUE, name = NULL) 
     group_detr = cfg$group_detr,
     two_stage = TRUE,
     lite_refpoint_refine = TRUE,
-    bbox_reparam = TRUE
+    bbox_reparam = TRUE,
+    num_select = cfg$num_select %||% 300L
   )
   if (pretrained) {
     if (is.null(name)) {
