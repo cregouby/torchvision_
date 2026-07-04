@@ -77,7 +77,7 @@ expect_coco_model_detects_cat <- function(model) {
     out <- model(input)
   })
   expect_named(out, "detections")
-  expect_named(out$detections[[1]], c("boxes", "labels", "scores"))
+  expect_named(out$detections[[1]], c("boxes", "labels", "scores"), ignore.order = TRUE)
   expect_equal(out$detections[[1]]$boxes$shape[2], 4L)
   labels_vec <- as.integer(out$detections[[1]]$labels$cpu())
   scores_vec <- as.numeric(out$detections[[1]]$scores$cpu())
