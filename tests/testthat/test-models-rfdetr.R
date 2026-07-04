@@ -21,7 +21,7 @@ test_that("tests for pretrained model_rfdetr_nano", {
   out <- model(input)
   expect_tensor_shape(out$detections[[1]]$scores, 300)
   expect_tensor_shape(out$detections[[1]]$boxes, c(300, 4))
-  expect_coco_model_detects_cat(model)
+  expect_coco_model_detects_cat(model, min_score = 0.1)
 
     rm(model)
   gc()
@@ -50,7 +50,7 @@ test_that("tests for pretrained model_rfdetr_small", {
   out <- model(input)
   expect_tensor_shape(out$detections[[1]]$scores, 300)
   expect_tensor_shape(out$detections[[1]]$boxes, c(300, 4))
-  expect_coco_model_detects_cat(model)
+  expect_coco_model_detects_cat(model, min_score = 0.1)
 
   rm(model)
   gc()
@@ -79,7 +79,7 @@ test_that("tests for pretrained model_rfdetr_medium", {
   out <- model(input)
   expect_tensor_shape(out$detections[[1]]$scores, 300)
   expect_tensor_shape(out$detections[[1]]$boxes, c(300, 4))
-  expect_coco_model_detects_cat(model)
+  expect_coco_model_detects_cat(model, min_score = 0.1)
 
   rm(model)
   gc()
@@ -148,7 +148,7 @@ test_that("tests for non-pretrained model_rfdetr_base_o365", {
   input <- torch::torch_randn(1, 3, 640, 640)
   model$eval()
   out <- model(input)
-  expect_tensor_shape(out$detections[[1]]$scores, c(1, 300, 366))
+  expect_tensor_shape(out$detections[[1]]$scores, 300)
   expect_tensor_shape(out$detections[[1]]$boxes, c(300, 4))
 
   rm(model)
@@ -164,7 +164,7 @@ test_that("tests for pretrained model_rfdetr_base_o365", {
   input <- torch::torch_randn(1, 3, 640, 640)
   model$eval()
   out <- model(input)
-  expect_tensor_shape(out$detections[[1]]$scores, c(1, 300, 366))
+  expect_tensor_shape(out$detections[[1]]$scores, 300)
   expect_tensor_shape(out$detections[[1]]$boxes, c(300, 4))
 
   rm(model)

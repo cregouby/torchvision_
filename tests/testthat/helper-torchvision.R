@@ -66,7 +66,7 @@ expect_bbox_is_xyxy <- function(object, width, height) {
 
 
 # The top detection on this cat image should be the cat class (COCO id 17).
-expect_coco_model_detects_cat <- function(model) {
+expect_coco_model_detects_cat <- function(model, min_score = 0.25) {
   input <- base_loader("assets/class/cat/cat.2.jpg") %>%
     transform_to_tensor() %>%
     transform_resize(c(640, 640)) %>%
@@ -84,5 +84,5 @@ expect_coco_model_detects_cat <- function(model) {
   expect_true(all(labels_vec >= 0 & labels_vec <= 90))
   top <- which.max(scores_vec)
   expect_equal(labels_vec[top], 17L)
-  expect_gt(scores_vec[top], 0.25)
+  expect_gt(scores_vec[top], min_score)
 }
